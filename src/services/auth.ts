@@ -1,4 +1,4 @@
-export function signIn() {
+export function authentication() {
     return new Promise(resolve => {
         setTimeout(() => {
             resolve({
