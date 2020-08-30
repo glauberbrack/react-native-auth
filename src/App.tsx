@@ -3,13 +3,16 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
+import AuthContext from './contexts/auth';
 import Routes from './routes'
 
 const App: React.FC = () => {
     return (
-        <NavigationContainer>
-            <Routes/>
-        </NavigationContainer>
+        <AuthContext.Provider value={{ signed: true }}>
+            <NavigationContainer>
+                <Routes/>
+            </NavigationContainer>
+        </AuthContext.Provider>
     );
 }
 
