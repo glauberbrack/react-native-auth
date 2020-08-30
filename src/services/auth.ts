@@ -1,4 +1,12 @@
-export function authentication() {
+interface AuthResponse {
+    token: string;
+    user: {
+        name: string;
+        email: string;
+    }
+}
+
+export function authentication(): Promise<AuthResponse> {
     return new Promise(resolve => {
         setTimeout(() => {
             resolve({
