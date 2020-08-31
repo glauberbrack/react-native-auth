@@ -6,6 +6,7 @@ import { authentication } from '../services/auth';
 interface AuthContextData {
     signed: boolean;
     user: object | null;
+    loading: boolean;
     signIn(): Promise<void>;
     signOut(): void;
 }
@@ -14,6 +15,7 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 
 export const AuthProvider: React.FC = ({ children }) =>  {
     const [user, setUser] = useState<object | null>(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function loadStoragedData(){
@@ -22,6 +24,7 @@ export const AuthProvider: React.FC = ({ children }) =>  {
 
             if(storagedUser && storagedToken) {
                 setUser(JSON.parse(storagedUser));
+                setLoading(false);
             }
         }
         loadStoragedData();
@@ -37,11 +40,13 @@ export const AuthProvider: React.FC = ({ children }) =>  {
     }
 
     function signOut() {
-        setUser(null)
+        AsyncStorage.clear().then(() => {
+            setUser(null)
+        });
     }
 
     return (
-        <AuthContext.Provider value={{ signed: !!user,  user: user, signIn, signOut }}>
+        <AuthContext.Provider value={{ signed: !!user,  user: user, loading, signIn, signOut }}>
             {children}
         </AuthContext.Provider>
     )
